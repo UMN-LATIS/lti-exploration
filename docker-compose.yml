@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  canvas:
+    image: lbjay/canvas-docker
+    ports:
+      - "3000:3000"
+    networks:
+      - mynet
+  web:
+    image: php:7.3.5-apache
+    container_name: php_web
+    hostname: web.local
+    depends_on:
+      - canvas
+    volumes:
+      - ./myLTI/:/var/www/html/
+    ports:
+      - "8100:80"
+    stdin_open: true
+    tty: true
+    networks:
+       mynet:    
+          aliases:
+            - web.local
+
+networks:
+  mynet:
